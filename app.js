@@ -31,12 +31,15 @@ function value() {
     return Math.round(Math.random()*10) // <= this thing here can be changed to whatever u wanna put
 }
 
-// sender
+// sockets
 
-io.of('/data').on('connection',function(socket){
-    socket.emit('hello',{ data: 'hello'});
+var cli3nts = []
+
+io.of('/data').on('connection',function(socket) {
+    socket.emit('hello',{ id: cli3nts.length});
     socket.on('received',function(data){
-        socket.emit('send',{ data: value()});
+        cli3nts[data.id]= data.cValue;
+        socket.emit('send',cli3nts);
        
     });
 });

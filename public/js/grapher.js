@@ -6,26 +6,40 @@ var options = {
         yaxis: { min: 0, max: 10 },
         xaxis: { show: false }
     };
+var c = 0
+var cValue = Math.random();
+var id
+
 socket.on('connect',function(data){
     socket.on('hello',function(data){
-        socket.emit('received',data);
+            id = data.id
+        socket.emit('received',{
+            cValue:cValue,
+            id:id
+            });
     });
-    socket.on('send',function(data){
-        graph_data.push(parseFloat(data['data']));
-        var result = [];
-        for(var i=0;i<graph_data.length;i++){
-             result.push([i,graph_data[i]]);
+    socket.on('send',function(data1){
+        if (c==0){
+          b = []
+          for (i=0;i<data1.length;i++) {
+            b[i] = {data:[], label:i};
+            b[i].data.push([b[i].data.length,data1[i]]);
+            c++
+          }
+        } else { 
+          for (i=0;i<data1.length;i++) {
+            b[i].data.push([b[i].data.length, data1[i]]);
+          }
         }
-        if(result < 10){
-            var plot = $.plot($('#graph'),[ result ],options);
-        }
-        else{     
-            var plot = $.plot($('#graph'),[ result.slice(-10) ],options);
-            result = result.slice(-10);
-        }
+
+        var plot = $.plot($('#graph'),b,options);    
+        
         plot.draw();
         setTimeout(function() {
-            socket.emit('received',data);
+            socket.emit('received', {
+            cValue:cValue,
+            id:id
+            });
             },100);
     });
     

@@ -26,11 +26,17 @@ io.configure(function() {
     io.set('log level', 1);
 });
 
+// the value getting part
+function value() {
+    return Math.round(Math.random()*10) // <= this thing here can be changed to whatever u wanna put
+}
+
+// sender
+
 io.of('/data').on('connection',function(socket){
     socket.emit('hello',{ data: 'hello'});
     socket.on('received',function(data){
-        var value = os.loadavg()[0];
-        socket.emit('send',{ data: value});
+        socket.emit('send',{ data: value()});
        
     });
 });

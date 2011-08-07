@@ -4,7 +4,7 @@ var options = {
         yaxis: { min: 0, max: 10 },
         xaxis: { show: false }
     };
-var cValue = (Math.random() * 10) ;
+var cValue = Math.round(Math.random() * 10);
 var id
 var b = []
 

@@ -7,7 +7,7 @@ var options = {
         xaxis: { show: false }
     };
 var c = 0
-var cValue = Math.random();
+var cValue = (Math.random() * 10) ;
 var id
 var b = []
 
@@ -19,15 +19,23 @@ socket.on('connect',function(data){
             id:id
             });
     });
-    socket.on('send',function(data1){
-         // console.log(data1);
+    socket.on('send',function(data1) {
           for (i=0;i<data1.length;i++) {
-            if (b[i] == undefined ) {
-              b[i] = {data:[], label:i+1};
-            }  
-            b[i].data.push([b[i].data.length,data1[i]]);
+            if (b[i] == undefined ) {      // if there is a new clinet, the object will be defined
+              b[i] = {data:[], label:i+1}; // the object model for the data to be put in graph
+              for (i2=0;i2<11;i2++) {
+                b[i].data[i2] = [i2+1,0]      //adding the x axis data
+              }
+            }
+
+            b[i].data[b[i].data.length] = [b[i].data.length, data1[i]]; //new points will be added to the array
+            b[i].data =  b[i].data.slice(-10); // the first point will be removed
+            console.log(b[i].data);
+            for (i2=0;i2<9;i2++) {
+              b[i].data[i2][0] -= 1
+            } // x values are all one less
           }
-         // console.log(b);
+         console.log(b);
         var plot = $.plot($('#graph'),b,options);    
         
         plot.draw();
@@ -36,7 +44,7 @@ socket.on('connect',function(data){
             cValue:cValue,
             id:id
             });
-            },100);
+            },1000);
     });
     
 });

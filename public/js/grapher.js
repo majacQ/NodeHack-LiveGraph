@@ -9,6 +9,7 @@ var options = {
 var c = 0
 var cValue = Math.random();
 var id
+var b = []
 
 socket.on('connect',function(data){
     socket.on('hello',function(data){
@@ -19,19 +20,14 @@ socket.on('connect',function(data){
             });
     });
     socket.on('send',function(data1){
-        if (c==0){
-          b = []
+         // console.log(data1);
           for (i=0;i<data1.length;i++) {
-            b[i] = {data:[], label:i};
+            if (b[i] == undefined ) {
+              b[i] = {data:[], label:i+1};
+            }  
             b[i].data.push([b[i].data.length,data1[i]]);
-            c++
           }
-        } else { 
-          for (i=0;i<data1.length;i++) {
-            b[i].data.push([b[i].data.length, data1[i]]);
-          }
-        }
-
+         // console.log(b);
         var plot = $.plot($('#graph'),b,options);    
         
         plot.draw();

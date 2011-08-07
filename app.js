@@ -48,7 +48,7 @@ io.of('/data').on('connection',function(socket) {
 
 app.get('/', function(req, res){
   res.render('index', {
-    title: 'hello'
+    title: 'LiveGraph'
   });
 });
 

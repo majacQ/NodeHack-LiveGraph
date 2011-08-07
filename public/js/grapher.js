@@ -1,12 +1,9 @@
 var socket = io.connect('http://localhost:3000/data');
-var graph_data = []
-var result = [];
 var options = {
         series: { shadowSize: 0 }, // drawing is faster without shadows
         yaxis: { min: 0, max: 10 },
         xaxis: { show: false }
     };
-var c = 0
 var cValue = (Math.random() * 10) ;
 var id
 var b = []
@@ -30,12 +27,11 @@ socket.on('connect',function(data){
 
             b[i].data[b[i].data.length] = [b[i].data.length, data1[i]]; //new points will be added to the array
             b[i].data =  b[i].data.slice(-10); // the first point will be removed
-            console.log(b[i].data);
-            for (i2=0;i2<9;i2++) {
+      
+      for (i2=0;i2<9;i2++) {
               b[i].data[i2][0] -= 1
             } // x values are all one less
           }
-         console.log(b);
         var plot = $.plot($('#graph'),b,options);    
         
         plot.draw();
@@ -48,4 +44,6 @@ socket.on('connect',function(data){
     });
     
 });
+
+
 

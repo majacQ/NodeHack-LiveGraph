@@ -1,4 +1,7 @@
+//Address And Port
 
+var address = 'localhost';
+var port = 1945;
 /**
  * Module dependencies.
  */
@@ -6,11 +9,10 @@
 var express = require('express'),
     app     = express.createServer(),
     io      = require('socket.io').listen(app),
-    ejs     = require('ejs'),
-    os      = require('os');
+    ejs     = require('ejs');
 
-var prev = 0
-var curr = 0
+var prev = 0;
+var curr = 0;
 // Configuration
 
 app.configure(function(){
@@ -33,7 +35,7 @@ function value() {
 
 // sockets
 
-var cli3nts = []
+var cli3nts = [];
 
 io.of('/data').on('connection',function(socket) {
     socket.emit('hello',{ id: cli3nts.length});
@@ -48,10 +50,12 @@ io.of('/data').on('connection',function(socket) {
 
 app.get('/', function(req, res){
   res.render('index', {
-    title: 'LiveGraph'
+    title: 'LiveGraph',
+    address: address,
+    port: port
   });
 });
 
 
-app.listen(3000);
+app.listen(port);
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);

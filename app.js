@@ -28,10 +28,6 @@ io.configure(function() {
     io.set('log level', 1);
 });
 
-// the value getting part
-function value() {
-    return Math.round(Math.random()*10) // <= this thing here can be changed to whatever u wanna put
-}
 
 // sockets
 

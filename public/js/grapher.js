@@ -18,7 +18,8 @@ var b = [];
 
 socket.on('connect',function(data){ //connected to server
     socket.on('hello',function(data){ //server says hello, we get our id
-            id = data.id
+            id = data.id;
+            $('p2').html('Your ID is ' + id + ' in the graph.');
         socket.emit('received',{ //we send the id back with the value
             cValue:cValue,
             id:id

@@ -1,0 +1,49 @@
+#!/usr/bin/env node
+
+
+// Make sure working folder is the same as this file
+process.chdir(__dirname);
+
+// Check node_modules folder
+var fs      = require('fs');
+var base    = __dirname + '/node_modules';
+var modules = [];
+try {
+    var files = fs.readdirSync(base);
+    
+    // Only read the directories
+    for (var i in files) {
+        var file = files[i];
+        var stat = fs.statSync(base + '/' + files[i]);
+        if (stat.isDirectory())
+            modules.push(file);
+    }
+}
+catch(e) {}
+
+// Get the list of dependencies that we need
+var installList = [];
+var dependencies = JSON.parse(fs.readFileSync('./package.json', 'utf-8')).dependencies;
+var needed = Object.keys(dependencies);
+
+for (var i in needed) {
+    var dep = needed[i];
+    if (-1 === modules.indexOf(dep))
+        installList.push('"' + dep + '@' + dependencies[dep] + '"');
+}
+
+if (installList.length > 0) {
+    var cmd = 'npm install ' + installList.join(' ');
+    
+    var exec = require('child_process').exec;
+    console.log('Running ' + cmd);
+    exec(cmd, {}, function(err, stdout, stderr) {
+        if (err)
+            console.log(err);
+        else 
+            console.log(stdout);
+    });
+}
+else {
+    console.log('Nothing to install');
+}

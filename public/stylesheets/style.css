@@ -1,6 +1,8 @@
 body {
+  hieght: 100%; /* this is needed to make the resizing work */
   padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  text-align: center
 }
 
 a {
